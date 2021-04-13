@@ -42,6 +42,9 @@ const StackFavoritesNavigator = () => {
       <Stack.Screen name="FavoritesStack" options={{ title: 'Favorites' }}>
         {props => <FavoritesScreen {...props} />}
       </Stack.Screen>
+      <Stack.Screen name="DetailStack" options={{ title: 'Coin Detail' }}>
+        {props => <CoinDetailScreen {...props} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

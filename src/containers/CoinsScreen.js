@@ -22,7 +22,7 @@ export const CoinsScreen = ({ navigation }) => {
     getCoins();
   }, []);
   const handleOnPress = coin => {
-    navigation.navigate('Detail', { coin: coin });
+    navigation.navigate('DetailStack', { coin: coin });
   };
   const handleSearch = value => {
     setState({ ...state, text: value });

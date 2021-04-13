@@ -17,10 +17,8 @@ import Colors from '../res/colors';
 export const CoinDetailScreen = ({ navigation, route }) => {
   const { coin } = route.params;
 
-  const [state, setState] = useState({
-    markets: [],
-    isFavorite: false,
-  });
+  const [markets, setmarkets] = useState([]);
+  const [isFavorite, setisFavorite] = useState(false);
 
   useEffect(() => {
     getMarkets(coin.id);
@@ -31,21 +29,21 @@ export const CoinDetailScreen = ({ navigation, route }) => {
   const getMarkets = async coinId => {
     const url = `https://api.coinlore.net/api/coin/markets/?id=${coinId}`;
     const markets = await Http.instance.get(url);
-    setState({ ...state, markets: markets });
+    setmarkets(markets);
   };
 
   const getFavorite = async () => {
     const key = `favorite-${coin.id}`;
     try {
       const favStr = await Storage.instance.get(key);
-      if (favStr != null) setState({ ...state, isFavorite: true });
+      if (favStr != null) setisFavorite(true);
     } catch (error) {
       console.log('get error: ', error);
     }
   };
 
   const toggleFavorite = () => {
-    if (state.isFavorite) {
+    if (isFavorite) {
       removeFavorite();
     } else {
       addFavorite();
@@ -53,10 +51,10 @@ export const CoinDetailScreen = ({ navigation, route }) => {
   };
 
   const addFavorite = async () => {
-    const coin = JSON.stringify(coin);
+    const coinFavorite = JSON.stringify(coin);
     const key = `favorite-${coin.id}`;
-    const stored = await Storage.instance.store(key, coin);
-    if (stored) setState({ ...state, isFavorite: true });
+    const stored = await Storage.instance.store(key, coinFavorite);
+    if (stored) setisFavorite(true);
   };
 
   const removeFavorite = async () => {
@@ -70,7 +68,7 @@ export const CoinDetailScreen = ({ navigation, route }) => {
         onPress: async () => {
           const key = `favorite-${coin.id}`;
           await Storage.instance.remove(key);
-          setState({ ...state, isFavorite: false });
+          setisFavorite(false);
         },
         style: 'destructive',
       },
@@ -115,12 +113,10 @@ export const CoinDetailScreen = ({ navigation, route }) => {
           onPress={toggleFavorite}
           style={[
             styles.buttonFavorite,
-            state.isFavorite
-              ? styles.buttonFavoriteRemove
-              : styles.buttonFavoriteAdd,
+            isFavorite ? styles.buttonFavoriteRemove : styles.buttonFavoriteAdd,
           ]}>
           <Text style={styles.textButton}>
-            {state.isFavorite ? 'Remove favorite' : 'Add favorite'}
+            {isFavorite ? 'Remove favorite' : 'Add favorite'}
           </Text>
         </Pressable>
       </View>
@@ -143,7 +139,7 @@ export const CoinDetailScreen = ({ navigation, route }) => {
       <FlatList
         keyExtractor={item => item.id}
         style={styles.list}
-        data={state.markets}
+        data={markets}
         renderItem={({ item }) => <CoinMarketItem data={item} />}
         horizontal={true}
       />
