@@ -1,3 +1,5 @@
+import { Alert } from 'react-native';
+
 class Http {
   static instance = new Http();
 
@@ -8,6 +10,12 @@ class Http {
       return json;
     } catch (error) {
       console.log('HTTP GET: ', error);
+      if (error == 'TypeError: Network request failed') {
+        Alert.alert(
+          'Information',
+          'There is no connection to a network at this time',
+        );
+      }
       throw Error(error);
     }
   };
