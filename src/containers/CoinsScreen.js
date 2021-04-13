@@ -18,8 +18,8 @@ export const CoinsScreen = ({ navigation }) => {
   useEffect(() => {
     getCoins();
   }, []);
-  const handleOnPress = () => {
-    navigation.navigate('Detail');
+  const handleOnPress = coin => {
+    navigation.navigate('Detail', { coin: coin });
   };
   return (
     <View style={styles.container}>
@@ -28,7 +28,9 @@ export const CoinsScreen = ({ navigation }) => {
       ) : (
         <FlatList
           data={state.coins}
-          renderItem={({ item }) => <CoinItem data={item} />}
+          renderItem={({ item }) => (
+            <CoinItem data={item} onPress={() => handleOnPress(item)} />
+          )}
         />
       )}
     </View>
@@ -41,13 +43,5 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.charade,
     justifyContent: 'center',
     width: '100%',
-  },
-  button: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: 'blue',
-    margin: 10,
-    padding: 10,
   },
 });
