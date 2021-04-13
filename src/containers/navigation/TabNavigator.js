@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StackNavigator } from './StackNavigator';
+import { StackCoinsNavigator, StackFavoritesNavigator } from './StackNavigator';
 import { Image } from 'react-native';
 import Colors from '../../res/colors';
 
@@ -13,16 +13,29 @@ const TabNavigator = () => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: Colors.blackPearl,
+          borderStartColor: Colors.blackPearl,
         },
       }}>
       <Tab.Screen
         name="Coins"
-        component={StackNavigator}
+        component={StackCoinsNavigator}
         options={{
           tabBarIcon: ({ size, color }) => (
             <Image
               style={{ tintColor: color, width: size, height: size }}
               source={require('../../assets/bank.png')}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Favorite"
+        component={StackFavoritesNavigator}
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <Image
+              style={{ tintColor: color, width: size, height: size }}
+              source={require('../../assets/star.png')}
             />
           ),
         }}
